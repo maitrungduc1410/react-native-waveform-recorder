@@ -12,9 +12,7 @@ High-performance React Native audio recorder with a **native live waveform**, mu
 
 | iOS | Android |
 | :---: | :---: |
-| _<screenshot placeholder — iOS>_ | _<screenshot placeholder — Android>_ |
-| _<screenshot placeholder — iOS preview>_ | _<screenshot placeholder — Android preview>_ |
-| _<screenshot placeholder — iOS recipe (WhatsApp)>_ | _<screenshot placeholder — Android recipe (WhatsApp)>_ |
+| <video src="https://github.com/user-attachments/assets/683227e2-3f87-4b31-b4ce-7c3a43aae9c6" controls loop muted></video> |<video src="https://github.com/user-attachments/assets/6e84d929-5fe0-4198-8379-6c4a3b73b3e4" controls loop muted></video> |
 
 ## Why another recorder?
 
