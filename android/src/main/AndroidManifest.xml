@@ -1,0 +1,28 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+      Audio capture permission used by the recorder engine. Host apps must
+      still call `PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO, ...)`
+      from JS before invoking `ref.start()` — Android will not auto-prompt
+      on a `MediaRecorder.start()` call.
+    -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!--
+      Optional permissions used when the host opts into background recording
+      via the `backgroundRecording` prop. Manifest-merger pushes these into
+      the host app's manifest at build time; they're a no-op unless the host
+      also declares the foreground service.
+
+      For background recording to work the host app must additionally add
+      this declaration to their AndroidManifest.xml:
+
+        <service
+            android:name="com.waveformrecorder.WaveformRecorderBackgroundService"
+            android:foregroundServiceType="microphone"
+            android:exported="false" />
+    -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"
+        android:minSdkVersion="34" />
+</manifest>

@@ -1,0 +1,182 @@
+{
+  "name": "react-native-waveform-recorder",
+  "version": "1.0.0",
+  "description": "High-performance React Native audio recorder with a native live waveform, multi-segment record/pause/resume, in-place preview + scrub playback, slide-to-cancel / slide-to-lock gestures, silence detection, and a WhatsApp-style 64-bucket export. Built on the New Architecture (Fabric), zero JS in the metering hot path. Pairs with react-native-waveform-player.",
+  "main": "./lib/module/index.js",
+  "types": "./lib/typescript/src/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.tsx",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./pcm-stream": {
+      "source": "./src/pcm-stream/index.tsx",
+      "types": "./lib/typescript/src/pcm-stream/index.d.ts",
+      "default": "./lib/module/pcm-stream/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "*.podspec",
+    "react-native.config.js",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
+  "scripts": {
+    "example": "yarn workspace react-native-waveform-recorder-example",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "prepare": "bob build",
+    "typecheck": "tsc",
+    "lint": "eslint \"**/*.{js,ts,tsx}\""
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android",
+    "fabric",
+    "new-architecture",
+    "turbomodule",
+    "audio",
+    "audio-recorder",
+    "recorder",
+    "recording",
+    "voice",
+    "voice-recorder",
+    "voice-message",
+    "voice-note",
+    "waveform",
+    "live-waveform",
+    "waveform-recorder",
+    "visualizer",
+    "audio-visualizer",
+    "microphone",
+    "mic",
+    "m4a",
+    "aac",
+    "wav",
+    "opus",
+    "pcm",
+    "pcm-stream",
+    "whatsapp",
+    "messenger",
+    "instagram",
+    "slack",
+    "tiktok",
+    "zalo",
+    "chat",
+    "swift",
+    "kotlin",
+    "native"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maitrungduc1410/react-native-waveform-recorder.git"
+  },
+  "author": "Duc Trung Mai <maitrungduc1410@gmail.com> (https://github.com/maitrungduc1410)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maitrungduc1410/react-native-waveform-recorder/issues"
+  },
+  "homepage": "https://github.com/maitrungduc1410/react-native-waveform-recorder#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@commitlint/config-conventional": "^20.5.0",
+    "@eslint/compat": "^2.0.3",
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^10.0.1",
+    "@react-native/babel-preset": "0.85.0",
+    "@react-native/eslint-config": "0.85.0",
+    "@types/react": "^19.2.0",
+    "commitlint": "^20.5.0",
+    "del-cli": "^7.0.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-ft-flow": "^3.0.11",
+    "eslint-plugin-prettier": "^5.5.5",
+    "lefthook": "^2.1.4",
+    "prettier": "^3.8.1",
+    "react": "19.2.3",
+    "react-native": "0.85.0",
+    "react-native-builder-bob": "^0.41.0",
+    "turbo": "^2.8.21",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "workspaces": [
+    "example"
+  ],
+  "packageManager": "yarn@4.11.0",
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "codegenConfig": {
+    "name": "WaveformRecorderViewSpec",
+    "type": "all",
+    "jsSrcsDir": "src",
+    "android": {
+      "javaPackageName": "com.waveformrecorder"
+    },
+    "ios": {
+      "components": {
+        "WaveformRecorderView": {
+          "className": "WaveformRecorderView"
+        }
+      }
+    }
+  },
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "create-react-native-library": {
+    "type": "fabric-view",
+    "languages": "kotlin-objc",
+    "tools": [
+      "eslint",
+      "lefthook"
+    ],
+    "version": "0.62.0"
+  }
+}
