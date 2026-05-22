@@ -16,18 +16,19 @@ High-performance React Native audio recorder with a **native live waveform**, mu
 
 ## Why another recorder?
 
-| | this library | [`simform-solutions/react-native-audio-waveform`](https://github.com/Simform/react-native-audio-waveform) | [`nitro-sound`](https://github.com/AlirezaHadjar/react-native-nitro-sound) | [`SocketSomeone/react-native-waveforms`](https://github.com/SocketSomeone/react-native-waveforms) |
-| --- | --- | --- | --- | --- |
-| Renders waveform | **Native, on-thread** (Swift / Kotlin) | Native | JS-driven | JS-driven |
-| Live waveform during recording | **Yes** | Yes | Manual | No |
-| Record + pause/resume → same file | **Yes** | No | Manual | No |
-| Preview state (in-place playback + scrub) | **Yes** | No | No | No |
-| WhatsApp-style 64-bucket export | **Built in** (`onComplete.samples`) | No | No | No |
-| Slide-to-cancel / slide-to-lock | **Native gestures** | No | No | No |
-| Silence detection w/ auto-stop | **Yes** | No | No | No |
-| Output formats | `m4a`, `aac`, `wav`, `opus` | `m4a` | `m4a`, `mp3`, `wav` | `m4a` |
-| Raw-PCM streaming hook | **Opt-in subpath** (`/pcm-stream`) | No | No | No |
-| Dependencies | **No** | Same | + `react-native-nitro-modules` | Same |
+| | this library | [`@simform_solutions/react-native-audio-waveform`](https://github.com/SimformSolutionsPvtLtd/react-native-audio-waveform) | [`react-native-nitro-sound`](https://github.com/hyochan/react-native-nitro-sound) | [`@lodev09/expo-recorder`](https://github.com/lodev09/expo-recorder) | [`@bhojaniasgar/react-native-audio-waveform`](https://github.com/bhojaniasgar/react-native-audio-waveform) |
+| --- | --- | --- | --- | --- | --- |
+| Renders waveform | **Native, on-thread** (Swift / Kotlin) | Native (`mode="live"` for recording, `mode="static"` for playback) | **No built-in renderer** — exposes `currentMetering`, you draw it yourself | JS-driven via Reanimated | Native |
+| Live waveform during recording | **Yes** | Yes | Manual (from metering callback) | Yes | Yes |
+| Record + pause/resume → same file | **Yes** | Yes (`pauseRecord` / `resumeRecord`) | Yes (`pauseRecorder` / `resumeRecorder`) | Via underlying `expo-audio` | Yes (`pauseRecording` / `resumeRecording`, Android 7.0+) |
+| Preview state (in-place playback + scrub) | **Yes** | Separate `static` mode pointing at the file | No integrated preview UI | Manual (composed externally) | Separate `Waveform` component for playback |
+| WhatsApp-style 64-bucket export | **Built in** (`onComplete.samples`) | No | No | No | No |
+| Slide-to-cancel / slide-to-lock | **Native gestures** | No | No | No | No |
+| Silence detection w/ auto-stop | **Yes** | No | No | No | No |
+| Output formats | `m4a`, `aac`, `wav`, `opus` | Configurable encoder (AAC/AAC-LD/HE-AAC/…) | Configurable via `AudioSet` (AAC/AAC-LD/…) | Whatever `expo-audio` supports | m4a (default) |
+| Raw-PCM streaming hook | **Opt-in subpath** (`/pcm-stream`) | No | No (metering only) | No | No |
+| Dependencies | **None** | `react-native-gesture-handler` | `react-native-nitro-modules` | `expo-audio` + `react-native-reanimated` + `react-native-gesture-handler` | None |
+| Ecosystem | Bare React Native | Bare React Native | Bare React Native | **Expo-only** | Bare React Native |
 
 ## Install
 
@@ -41,8 +42,8 @@ Requires React Native **0.85+** with the **New Architecture enabled** (Fabric + 
 
 ### iOS
 
-```ruby
-# Podfile is automatic — just `pod install`.
+```shell
+pod install
 ```
 
 Add a microphone usage description to `Info.plist`:
