@@ -1,6 +1,8 @@
 # AGENTS.md
 
-This file is the entry point for AI coding agents working in this repo. Read it before making changes. It's deliberately short — for the full deep-dive read [ARCHITECTURE.md](./ARCHITECTURE.md), and for the user-facing surface read [README.md](./README.md).
+This file is the entry point for AI coding agents working in this repo. Read it before making changes. It's deliberately short — for the full deep-dive read [ARCHITECTURE.md](./ARCHITECTURE.md), for the field report of past bugs and their lessons read [LESSONS_LEARNED.md](./LESSONS_LEARNED.md), and for the user-facing surface read [README.md](./README.md).
+
+> **Read [LESSONS_LEARNED.md](./LESSONS_LEARNED.md) before changing any state-machine, async-callback, native-gesture, memory, or codegen-shape code.** Most of the subtle bugs we've already hit live there with both the root cause and the fix pattern. Re-deriving them from scratch wastes context.
 
 ---
 
@@ -128,18 +130,25 @@ Run from repo root unless stated otherwise.
 
 ## Gotchas (real bugs we've already hit)
 
-These bit us during development. If your change touches a related area, double-check it didn't regress:
+These bit us during development. If your change touches a related area, double-check it didn't regress. **Each row links to a full write-up in [LESSONS_LEARNED.md](./LESSONS_LEARNED.md) — go there for the why and how-to-avoid.**
 
-| Symptom | Root cause | Fix pattern |
-| --- | --- | --- |
-| iOS recipe screen's record button does nothing while Android works | `display: 'none'` on a parent `View` unmounts the Fabric host view on iOS, nulling the imperative ref | Use absolute off-screen positioning (`position: 'absolute', left: -100000`) when you need a recorder mounted but hidden |
-| Play button missing on Android in preview mode | Initial `View.GONE` prevents layout measurement; later `setVisibility(VISIBLE)` leaves it at 0×0 | Use `View.INVISIBLE` for the initial state and force `measure()`/`layout()` after visibility changes |
-| iOS scrub conflicts with React Navigation swipe-back | Raw `touchesBegan/Moved/…` don't claim gesture priority | Use `UILongPressGestureRecognizer` with `minimumPressDuration = 0`, `allowableMovement = .greatestFiniteMagnitude`, `cancelsTouchesInView = false` |
-| Waveform disappears after `record → pause → enterPreview → exitPreview` | `barsView.isRecording = true` setter clears the ring buffer (assumes a fresh session) | After re-arming `isRecording = true`, re-seed `recordingAmps` from the engine's `amplitudeHistorySnapshot` |
-| Stale snapshot callback re-enters preview after user cancelled | Async `snapshotForPreview` callback had no liveness guard | Use the existing `previewToken` generation counter — bail when the token has advanced, and delete the orphaned temp file |
-| `futureBarStyle: 'line'` looks identical to `'dot'` | `barWidth × barWidth` rounded rect with `cornerRadius = barWidth/2` is just a circle | Make `line` a tall vertical pill (`barWidth × barWidth*4`) |
-| `Codegen` errors `Unable to determine event type for "samples": ReadonlyArray` | DirectEvent payloads can't contain arrays | Serialise to a delimited string + parse in the JS wrapper |
-| iOS build fails with `no member named 'foo' in WaveformRecorderViewProps` after adding a prop | Codegen output is stale | `cd example/ios && pod install` |
+| Symptom | Root cause | Fix pattern | Full write-up |
+| --- | --- | --- | --- |
+| iOS recipe screen's record button does nothing while Android works | `display: 'none'` on a parent `View` unmounts the Fabric host view on iOS, nulling the imperative ref | Use absolute off-screen positioning (`position: 'absolute', left: -100000`) when you need a recorder mounted but hidden | [§1.1](./LESSONS_LEARNED.md#11-display-none-unmounts-the-ios-host-view) |
+| Play button missing on Android in preview mode | Initial `View.GONE` prevents layout measurement; later `setVisibility(VISIBLE)` leaves it at 0×0 | Use `View.INVISIBLE` for the initial state and force `measure()`/`layout()` after visibility changes | [§1.2](./LESSONS_LEARNED.md#12-viewgone-on-android-prevents-layout-measurement) |
+| `Codegen` errors `Unable to determine event type for "samples": ReadonlyArray` | DirectEvent payloads can't contain arrays | Serialise to a delimited string + parse in the JS wrapper | [§1.3](./LESSONS_LEARNED.md#13-codegen-directevent-payloads-cant-contain-arrays) |
+| iOS build fails with `no member named 'foo' in WaveformRecorderViewProps` after adding a prop | Codegen output is stale | `cd example/ios && pod install` | [§1.4](./LESSONS_LEARNED.md#14-stale-codegen-after-spec-changes) |
+| iOS scrub conflicts with React Navigation swipe-back | Raw `touchesBegan/Moved/…` don't claim gesture priority | Use `UILongPressGestureRecognizer` with `minimumPressDuration = 0`, `allowableMovement = .greatestFiniteMagnitude`, `cancelsTouchesInView = false` | [§2.1](./LESSONS_LEARNED.md#21-react-navigations-swipe-back-gesture-intercepts-our-scrub) |
+| Play button stays visible after `exitPreview` | Direct assignment `compositeState = .paused` bypasses `updatePlayButtonVisibility` and `setNeedsLayout` | Always route transitions through `transitionComposite(target)` | [§3.1](./LESSONS_LEARNED.md#31-direct-compositestate--paused-bypassed-layout-updates) |
+| Duration label stuck at last value after `record → stop → cancel` | IDLE branch in engine-state callback cleared bars but didn't call `updateTimeLabel()` | Refresh **every** UI surface that reads the reset data, in the same branch as the reset | [§3.2](./LESSONS_LEARNED.md#32-idle-branch-cleared-bars-but-not-the-time-label) |
+| Waveform disappears after `record → pause → enterPreview → exitPreview` | `barsView.isRecording = true` setter clears the ring buffer (assumes a fresh session) | After re-arming `isRecording = true`, re-seed `recordingAmps` from the engine's `amplitudeHistorySnapshot` | [§3.3](./LESSONS_LEARNED.md#33-barsviewisrecording--true-setter-clears-the-buffer) |
+| Newest bar visibly slides leftward during its grow-in window | Slot math applied scroll offset to every bar uniformly, including the newest | Pin newest bar (`ageFromLatest == 0`) to slot 0; apply `rawProgress` only to older bars | [§3.4](./LESSONS_LEARNED.md#34-bar-animation-slot-math-pinned-the-wrong-bar) |
+| Stale snapshot callback re-enters preview after user cancelled | Async `snapshotForPreview` callback had no liveness guard | Bump `previewToken` on every state-mutating command; bail in the callback if the token advanced; delete any orphaned temp file | [§4.1](./LESSONS_LEARNED.md#41-stale-snapshotforpreview-callback-re-enters-preview-after-cancel) |
+| Temp concat files (`wfr_concat_*`) accumulating in caches | Multiple cleanup paths, none of them deleting the temp file | One `deleteIfTempConcat` helper called from every cleanup path (`exit`, `cancel`, `stopFromPreview`, `tearDown`, `deinit`, stale-token) | [§4.2](./LESSONS_LEARNED.md#42-temp-concat-files-leaked-on-every-preview-cleanup-path) |
+| Long multi-segment WAV recordings crash iOS at ~1 hour | WAV concat loads every segment fully into RAM and triple-copies via `Data + Data` | Stream segment-to-segment via 256 KB chunks (deferred — see roadmap) | [§6.3](./LESSONS_LEARNED.md#63-bounded-io-for-file-based-work) |
+| `futureBarStyle: 'line'` looks identical to `'dot'` | `barWidth × barWidth` rounded rect with `cornerRadius = barWidth/2` is just a circle | Make `line` a tall vertical pill (`barWidth × barWidth*4`) | — |
+| Display links / timers / handlers leaking after recording session ends | Cleanup wired into the happy path but missing on `cancel` / `error` / `deinit` | Every acquisition gets a matching `stop*()` companion; every state exit calls it | [§5](./LESSONS_LEARNED.md#5-resource-cleanup--the-every-exit-path-rule) |
+| Fabricated comparison-table entry in README (`SocketSomeone/react-native-waveforms`) | Cited from memory without fetching | Every external citation must be live-fetched and verified, both URL and claims | [§9](./LESSONS_LEARNED.md#9-documentation-honesty) |
 
 ---
 
