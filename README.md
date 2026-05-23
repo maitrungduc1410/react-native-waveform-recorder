@@ -300,6 +300,10 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for the full breakdown — file layout,
 
 In short: the JS layer is intentionally thin (permission flow + ref shape + DirectEvent re-emission). Everything else — recording, drawing, metering, scrub gestures, preview playback, multi-segment concat — lives in Swift / Kotlin behind a Fabric composite view.
 
+## Lessons learned
+
+If you're building something similar (a native-rendering Fabric component, an audio recorder, a stateful UI with async lifecycle) — or you're picking this codebase up to extend it — start with [LESSONS_LEARNED.md](./LESSONS_LEARNED.md). It's the field report of every non-obvious bug we hit (Fabric quirks like `display: 'none'` unmounting iOS views, async race conditions in preview snapshots, the WAV multi-segment memory bomb, state-machine UI desync patterns, …) along with the meta-lessons each one taught us. Cheaper to read than to re-discover.
+
 ## Roadmap & known limitations
 
 The library is feature-complete and production-ready, but a few items are deferred for future releases. PRs welcome.
