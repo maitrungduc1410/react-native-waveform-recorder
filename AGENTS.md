@@ -48,6 +48,10 @@ This file is the entry point for AI coding agents working in this repo. Read it 
 │   ├── WaveformRecorderBackgroundService.kt     Microphone foreground service
 │   └── WaveformRecorderEvent.kt                 DirectEvent helpers
 │
+├── plugin/                                Expo config plugin (plain JS, no build step)
+│   └── withWaveformRecorder.js                  iOS mic/UIBackgroundModes + Android service
+├── app.plugin.js                          Expo plugin entry point (re-exports plugin/)
+│
 ├── example/                               Comprehensive example app + recipes
 │   ├── src/App.tsx                              Stack navigator entry
 │   ├── src/screens/*.tsx                        Per-screen demos + recipes
@@ -98,6 +102,7 @@ Run from repo root unless stated otherwise.
   7. `android/.../WaveformRecorderView.kt` (handler)
   8. Re-run `cd example/ios && pod install` so iOS codegen picks up the change. Android regenerates as part of gradle.
 - **Keep iOS and Android in lockstep.** When you fix a bug on one platform, fix or audit the same code path on the other. The two composite views (`WaveformRecorderViewImpl.swift` / `WaveformRecorderView.kt`) are intentional mirrors.
+- **Keep the Expo config plugin in sync with native manifest requirements.** `plugin/withWaveformRecorder.js` injects the iOS mic/`UIBackgroundModes` keys and the Android foreground `<service>` for Expo users. If you rename `WaveformRecorderBackgroundService`, change its `foregroundServiceType`, or add a new manifest/Info.plist requirement, update the plugin to match — Expo consumers don't get `android/src/main/AndroidManifest.xml` merged the same way bare apps do for the `<service>` node.
 - **Codegen DirectEvent payloads cannot contain arrays.** If you need to emit an array, serialise to a delimited string on the native side and parse it in `WaveformRecorderView.native.tsx` (existing precedent: `samplesCsv` → `samples: number[]`).
 
 ### Threading
