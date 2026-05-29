@@ -8,6 +8,8 @@ High-performance React Native audio recorder with a **native live waveform**, mu
 
 **Best paired with [`react-native-waveform-player`](https://github.com/maitrungduc1410/react-native-waveform-player)** — this library handles the recording side; the player handles playback. Use them together for a complete voice-message stack: record with a live waveform, then drop the resulting URI + 64-bucket peaks straight into the player for the chat bubble — no decode round-trip needed. Both libraries are intentionally standalone (zero shared peer deps) and share the same visual language.
 
+**Works with Expo** — fully supported via a [development build](https://docs.expo.dev/develop/development-builds/introduction/) (EAS Build or `expo prebuild`). Doesn't work in Expo Go because Expo Go can't load third-party native modules. See [Expo install](#expo) below.
+
 ## Demo
 
 | iOS | Android |
@@ -28,7 +30,7 @@ High-performance React Native audio recorder with a **native live waveform**, mu
 | Output formats | `m4a`, `aac`, `wav`, `opus` | Configurable encoder (AAC/AAC-LD/HE-AAC/…) | Configurable via `AudioSet` (AAC/AAC-LD/…) | Whatever `expo-audio` supports | m4a (default) |
 | Raw-PCM streaming hook | **Opt-in subpath** (`/pcm-stream`) | No | No (metering only) | No | No |
 | Dependencies | **None** | `react-native-gesture-handler` | `react-native-nitro-modules` | `expo-audio` + `react-native-reanimated` + `react-native-gesture-handler` | None |
-| Ecosystem | Bare React Native | Bare React Native | Bare React Native | **Expo-only** | Bare React Native |
+| Ecosystem | Bare RN **+ Expo** (dev client) | Bare React Native | Bare React Native | **Expo-only** | Bare React Native |
 
 ## Install
 
@@ -76,6 +78,67 @@ For `backgroundRecording`, declare the foreground service in your `android/app/s
 ```
 
 `FOREGROUND_SERVICE` and `FOREGROUND_SERVICE_MICROPHONE` are already declared by the library and merged in for you.
+
+### Expo
+
+This library works with Expo via a **[development build](https://docs.expo.dev/develop/development-builds/introduction/)** (EAS Build or `npx expo prebuild`). It does **not** work in Expo Go — Expo Go can't load third-party native modules.
+
+**1. Install the package.**
+
+```sh
+npx expo install react-native-waveform-recorder
+```
+
+**2. Add the config plugin to `app.json` / `app.config.js`.**
+
+The library ships an Expo config plugin that wires up the native permissions and the Android foreground service for you — no manual `Info.plist` / `AndroidManifest.xml` edits.
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "react-native-waveform-recorder",
+        {
+          "microphonePermission": "Allow $(PRODUCT_NAME) to record voice messages.",
+          "backgroundRecording": false
+        }
+      ]
+    ]
+  }
+}
+```
+
+Both options are optional:
+
+| Option | Type | Default | What it does |
+| --- | --- | --- | --- |
+| `microphonePermission` | `string \| false` | generic message | Sets iOS `NSMicrophoneUsageDescription`. Pass `false` to leave it untouched (e.g. if you set it elsewhere). |
+| `backgroundRecording` | `boolean` | `false` | When `true`, adds the iOS `audio` `UIBackgroundMode` **and** the Android foreground `<service>` declaration so the `backgroundRecording` prop works. |
+
+If you don't need background recording you can add the plugin with no options at all:
+
+```json
+{
+  "expo": {
+    "plugins": ["react-native-waveform-recorder"]
+  }
+}
+```
+
+The library auto-merges `RECORD_AUDIO` + foreground-service permissions into the Android manifest via manifest-merger, so you don't need to list them in `android.permissions`.
+
+**3. Generate the native projects (or rebuild your dev client).**
+
+```sh
+npx expo prebuild --clean
+# then re-build your dev client / EAS Build
+eas build --profile development --platform all
+```
+
+The library's `WaveformRecorder.podspec` uses standard new-architecture autolinking (`install_modules_dependencies(s)`), so `expo prebuild` picks it up automatically — no manual `Podfile` or `build.gradle` edits required.
+
+**SDK compatibility.** The library requires React Native 0.85+ with the New Architecture enabled. Pick an Expo SDK that ships RN 0.85 or newer (check the [Expo SDK ↔ RN compatibility table](https://docs.expo.dev/versions/latest/)). New Architecture is the default on recent Expo SDKs; if you're on an older one, enable it with `"newArchEnabled": true` in `app.json`.
 
 ## Quick start
 
