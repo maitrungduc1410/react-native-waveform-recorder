@@ -56,7 +56,8 @@ The JS layer is intentionally thin — it owns permission prompts, the imperativ
 | File | Role |
 | --- | --- |
 | `src/WaveformRecorderViewNativeComponent.ts` | Codegen spec (Fabric component descriptor: props, events, commands). |
-| `src/WaveformRecorderView.tsx` | Public type surface + a non-native fallback (`web` / `node`). |
+| `src/types.ts` | Public types (props, events, ref) with their TSDoc. Both component files import from here; the API reference is generated from it. |
+| `src/WaveformRecorderView.tsx` | Non-native fallback (`web` / `node`) that throws on render. |
 | `src/WaveformRecorderView.native.tsx` | Native wrapper: ref forwarding, JS-side permission flow, event re-emission, CSV → `number[]` parsing for `onComplete.samples`. |
 | `src/pcm-stream/index.tsx` | Opt-in helpers for raw PCM (`decodePcmChunk`, `pcmToMonoFloat32`). |
 

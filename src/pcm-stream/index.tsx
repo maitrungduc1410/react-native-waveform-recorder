@@ -1,10 +1,10 @@
 /**
- * Optional raw-PCM streaming helpers.
+ * Optional raw PCM streaming helpers, imported from
+ * `react-native-waveform-recorder/pcm-stream`.
  *
- * This entry point is opt-in — importing it should not pull anything new
- * into the default `react-native-waveform-recorder` bundle. The codegen
- * spec already declares `enablePcmStream` + `onPcmChunk` on the main view;
- * the helpers below just make the base64 payload easy to consume.
+ * This entry point is opt-in: apps that don't import it don't ship it.
+ * The main view already declares `enablePcmStream` and `onPcmChunk`; the
+ * helpers below make the base64 payload easy to consume.
  *
  * ## Usage
  *
@@ -34,18 +34,19 @@
  *  - Streaming only works with `output.format = 'wav'`. The m4a / opus
  *    paths don't hand us pre-encoded samples.
  *  - Payloads cross the bridge as base64 strings, not zero-copy buffers.
- *    For multi-MB/s pipelines, prefer [`react-native-audio-api`] which
- *    exposes a true JSI ringbuffer.
+ *    For multi-MB/s pipelines, prefer
+ *    [react-native-audio-api](https://github.com/software-mansion/react-native-audio-api).
  *
- * [`react-native-audio-api`]: https://github.com/software-mansion/react-native-audio-api
+ * @packageDocumentation
+ * @module react-native-waveform-recorder/pcm-stream
  */
 
 /**
  * Decode the base64 `chunk` payload from an `onPcmChunk` event into an
  * `Int16Array` (one entry per interleaved sample-per-channel).
  *
- * Implemented with `global.atob` (Hermes ships it as part of the WHATWG
- * URL/Encoding shim) — no third-party dependency.
+ * Uses `globalThis.atob` when the runtime provides it and a built-in
+ * decoder otherwise, so there is no third-party dependency.
  */
 export function decodePcmChunk(chunkBase64: string): Int16Array {
   const binary = decodeBase64(chunkBase64);

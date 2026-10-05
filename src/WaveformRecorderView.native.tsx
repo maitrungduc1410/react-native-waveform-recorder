@@ -21,27 +21,7 @@ import type {
   WaveformRecorderState,
   WaveformRecorderViewProps,
   WaveformRecorderViewRef,
-} from './WaveformRecorderView';
-
-export type {
-  WaveformRecorderCompleteEvent,
-  WaveformRecorderErrorEvent,
-  WaveformRecorderFutureBarStyle,
-  WaveformRecorderMeterEvent,
-  WaveformRecorderNewSampleEntry,
-  WaveformRecorderOutputConfig,
-  WaveformRecorderOutputFormat,
-  WaveformRecorderPlaybackTimeUpdateEvent,
-  WaveformRecorderRecordingMode,
-  WaveformRecorderSeekEvent,
-  WaveformRecorderSilenceDetectedEvent,
-  WaveformRecorderSlideProgressEvent,
-  WaveformRecorderState,
-  WaveformRecorderStateChangeEvent,
-  WaveformRecorderTimeMode,
-  WaveformRecorderViewProps,
-  WaveformRecorderViewRef,
-} from './WaveformRecorderView';
+} from './types';
 
 /**
  * Request `RECORD_AUDIO` on Android. On iOS this is a no-op — the native

@@ -1,3 +1,9 @@
+/**
+ * The recorder component, its props, events and ref type.
+ *
+ * @packageDocumentation
+ * @module react-native-waveform-recorder
+ */
 export {
   WaveformRecorderView,
   ensureMicrophonePermission,
@@ -10,6 +16,7 @@ export type {
   WaveformRecorderNewSampleEntry,
   WaveformRecorderOutputConfig,
   WaveformRecorderOutputFormat,
+  WaveformRecorderPcmChunkEvent,
   WaveformRecorderPlaybackTimeUpdateEvent,
   WaveformRecorderRecordingMode,
   WaveformRecorderSeekEvent,
@@ -20,4 +27,4 @@ export type {
   WaveformRecorderTimeMode,
   WaveformRecorderViewProps,
   WaveformRecorderViewRef,
-} from './WaveformRecorderView';
+} from './types';

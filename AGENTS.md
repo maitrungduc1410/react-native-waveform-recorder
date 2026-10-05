@@ -22,7 +22,8 @@ This file is the entry point for AI coding agents working in this repo. Read it 
 .
 ├── src/                                   JS/TS public surface
 │   ├── WaveformRecorderViewNativeComponent.ts   Codegen spec (source of truth)
-│   ├── WaveformRecorderView.tsx                 Public types + non-native fallback
+│   ├── types.ts                                 Public types + TSDoc (single source)
+│   ├── WaveformRecorderView.tsx                 Non-native fallback (throws)
 │   ├── WaveformRecorderView.native.tsx          Native wrapper (ref, permissions, CSV→array)
 │   ├── pcm-stream/index.tsx                     Opt-in PCM helpers (subpath import)
 │   └── index.tsx                                Public re-exports
@@ -57,6 +58,12 @@ This file is the entry point for AI coding agents working in this repo. Read it 
 │   ├── src/screens/*.tsx                        Per-screen demos + recipes
 │   └── src/components/*.tsx                     Shared UI (SentVoiceNote, etc.)
 │
+├── docs/                                  Yarn workspace: VitePress site + TypeDoc API reference (GitHub Pages)
+│   ├── .vitepress/config.mts                    Site config, en/vi/zh locales, nav, sidebars, SEO
+│   ├── .vitepress/theme/                        Palette, HeroArt + RecorderDemo (browser approximation)
+│   ├── guide/, vi/guide/, zh/guide/             Hand-written guide pages, one copy per locale
+│   └── typedoc.json                             API reference from src -> docs/api (generated, gitignored)
+│
 ├── README.md                              User-facing docs
 ├── ARCHITECTURE.md                        Internals, threading, memory bounds
 ├── CONTRIBUTING.md                        How to set up + run + PR
@@ -85,6 +92,19 @@ Run from repo root unless stated otherwise.
 | `cd example/ios && pod install` | Regenerate iOS codegen. **Required after any change to `src/WaveformRecorderViewNativeComponent.ts`.** |
 | `yarn prepare` | Compile the library with `bob` (ESM + .d.ts in `lib/`). |
 | `yarn clean` | Delete `lib/`, native build dirs, example build dirs. |
+| `yarn docs:dev` | TypeDoc + VitePress dev server for the docs site. |
+| `yarn docs:build` | TypeDoc + static build into `docs/.vitepress/dist` (fails on dead links). |
+
+---
+
+## Documentation site
+
+`docs/` is its own Yarn workspace (`react-native-waveform-recorder-docs`), excluded from the root `tsc` and ESLint. `.github/workflows/docs.yml` builds it on PRs and deploys it to https://maitrungduc1410.github.io/react-native-waveform-recorder/ on push to `master`.
+
+- The API reference is generated from the TSDoc in `src/` (`src/index.tsx` and `src/pcm-stream/index.tsx`), so public API changes are documented by writing TSDoc there.
+- Guide pages exist in English (`docs/guide/`), Vietnamese (`docs/vi/guide/`) and Chinese (`docs/zh/guide/`). Change all three together; headings carry `{#english-slug}` ids so anchors match across locales. Sidebar labels live in `docs/.vitepress/config.mts`.
+- Every hand-written page needs a unique `description` frontmatter (about 110 to 160 characters, shorter for Chinese). The link preview image is `docs/public/og.png`, rendered from `docs/public/og.svg`.
+- `docs/.vitepress/theme/components/RecorderDemo.vue` mirrors the native defaults, bar math and state rules. Update it when those change.
 
 ---
 
@@ -94,7 +114,7 @@ Run from repo root unless stated otherwise.
 
 - **iOS Swift code is bridged through `WaveformRecorderView.mm`.** When you add a prop, event, or command, change all of:
   1. `src/WaveformRecorderViewNativeComponent.ts` (codegen spec — source of truth)
-  2. `src/WaveformRecorderView.tsx` (public types + JSDoc)
+  2. `src/types.ts` (public types + TSDoc)
   3. `src/WaveformRecorderView.native.tsx` (wrapper)
   4. `ios/WaveformRecorderView.mm` (bridge entries)
   5. `ios/WaveformRecorderViewImpl.swift` (handler)
