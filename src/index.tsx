@@ -2,7 +2,7 @@
  * The recorder component, its props, events and ref type.
  *
  * @packageDocumentation
- * @module react-native-waveform-recorder
+ * @mergeModuleWith <project>
  */
 export {
   WaveformRecorderView,

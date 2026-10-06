@@ -57,7 +57,7 @@ The helpers live in the `react-native-waveform-recorder/pcm-stream` subpath, so 
 | `decodePcmChunk(chunk)` | Decodes the base64 payload into an `Int16Array`. Uses `globalThis.atob` when available and a built-in decoder otherwise. |
 | `pcmToMonoFloat32(int16, channels)` | Converts interleaved Int16 into mono `Float32Array` in `[-1, 1]`. Stereo pairs are averaged. |
 
-See the [API reference](/api/react-native-waveform-recorder/pcm-stream/) for signatures.
+See the [API reference](/api/pcm-stream/) for signatures.
 
 ## Limits {#limits}
 

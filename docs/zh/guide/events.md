@@ -4,7 +4,7 @@ description: "WaveformRecorderView 的事件：状态变化、电平、带 64 �
 
 # 事件 {#events}
 
-所有事件都是 `WaveformRecorderView` 的属性。事件数据的类型见 [API 参考](/api/react-native-waveform-recorder/)。
+所有事件都是 `WaveformRecorderView` 的属性。事件数据的类型见 [API 参考](/api/)。
 
 | 事件 | 数据 | 触发时机 |
 | --- | --- | --- |

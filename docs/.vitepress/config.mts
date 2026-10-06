@@ -198,17 +198,12 @@ function pageUrl(page: string): string {
 function apiDescription(relativePath: string): string | undefined {
   const lib = 'react-native-waveform-recorder';
   if (relativePath === 'api/index.md') {
-    return `API reference for ${lib}: the recorder component, its props, events and ref type, plus the PCM stream helpers, generated from the TypeScript source.`;
+    return `API reference for ${lib}: WaveformRecorderView, its props, ref methods, event payloads, ensureMicrophonePermission and the PCM stream helpers.`;
   }
-  if (relativePath === `api/${lib}/index.md`) {
-    return `API reference for the main ${lib} entry point: WaveformRecorderView, its props, ref methods, event payloads and ensureMicrophonePermission.`;
-  }
-  if (relativePath === `api/${lib}/pcm-stream/index.md`) {
+  if (relativePath === 'api/pcm-stream/index.md') {
     return `API reference for ${lib}/pcm-stream: helpers that decode onPcmChunk payloads into Int16 and mono Float32 samples.`;
   }
-  const m = relativePath.match(
-    /^api\/react-native-waveform-recorder\/(?:pcm-stream\/)?([\w-]+)\/([^/]+)\.md$/
-  );
+  const m = relativePath.match(/^api\/(?:pcm-stream\/)?([\w-]+)\/([^/]+)\.md$/);
   if (!m) return undefined;
   const [, kind, name] = m;
   switch (kind) {

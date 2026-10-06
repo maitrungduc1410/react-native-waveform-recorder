@@ -4,7 +4,11 @@
   "entryPoints": ["../src/index.tsx", "../src/pcm-stream/index.tsx"],
   "tsconfig": "../tsconfig.build.json",
   "out": "api",
-  "plugin": ["typedoc-plugin-markdown", "typedoc-vitepress-theme"],
+  "plugin": [
+    "typedoc-plugin-markdown",
+    "typedoc-vitepress-theme",
+    "./typedoc-project-comment.mjs"
+  ],
   "docsRoot": ".",
   "readme": "none",
   "entryFileName": "index",

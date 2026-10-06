@@ -4,7 +4,7 @@ description: "Các sự kiện của WaveformRecorderView: đổi trạng thái,
 
 # Sự kiện {#events}
 
-Mọi sự kiện đều là props của `WaveformRecorderView`. Kiểu dữ liệu của payload có trong [tài liệu API](/api/react-native-waveform-recorder/).
+Mọi sự kiện đều là props của `WaveformRecorderView`. Kiểu dữ liệu của payload có trong [tài liệu API](/api/).
 
 | Sự kiện | Payload | Khi nào |
 | --- | --- | --- |

@@ -57,7 +57,7 @@ Các helper nằm ở subpath `react-native-waveform-recorder/pcm-stream`, nên 
 | `decodePcmChunk(chunk)` | Giải mã payload base64 thành `Int16Array`. Dùng `globalThis.atob` nếu có, nếu không thì dùng bộ giải mã có sẵn. |
 | `pcmToMonoFloat32(int16, channels)` | Chuyển Int16 xen kẽ kênh thành `Float32Array` một kênh trong `[-1, 1]`. Cặp stereo được lấy trung bình. |
 
-Xem chữ ký hàm trong [tài liệu API](/api/react-native-waveform-recorder/pcm-stream/).
+Xem chữ ký hàm trong [tài liệu API](/api/pcm-stream/).
 
 ## Giới hạn {#limits}
 

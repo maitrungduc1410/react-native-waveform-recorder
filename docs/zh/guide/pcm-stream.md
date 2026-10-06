@@ -57,7 +57,7 @@ import {
 | `decodePcmChunk(chunk)` | 把 base64 数据解码为 `Int16Array`。有 `globalThis.atob` 时使用它，否则使用内置解码器。 |
 | `pcmToMonoFloat32(int16, channels)` | 把声道交错的 Int16 转为 `[-1, 1]` 范围内的单声道 `Float32Array`。立体声会对左右声道取平均。 |
 
-函数签名见 [API 参考](/api/react-native-waveform-recorder/pcm-stream/)。
+函数签名见 [API 参考](/api/pcm-stream/)。
 
 ## 限制 {#limits}
 

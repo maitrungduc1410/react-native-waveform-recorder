@@ -5,6 +5,7 @@
 // Android mirrors) so the props and events behave like the real component.
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useData } from 'vitepress';
+import CodeBlock from './CodeBlock.vue';
 
 type State = 'idle' | 'recording' | 'paused' | 'preview' | 'stopped' | 'error';
 type Engine = 'idle' | 'recording' | 'paused' | 'between' | 'stopped';
@@ -1120,7 +1121,7 @@ const fmt = (n: number, d = 2) => n.toFixed(d);
 
     <details class="snippet">
       <summary>{{ t.snippet }}</summary>
-      <pre><code>{{ snippet }}</code></pre>
+      <CodeBlock :code="snippet" />
     </details>
   </div>
 </template>
@@ -1477,14 +1478,5 @@ const fmt = (n: number, d = 2) => n.toFixed(d);
   cursor: pointer;
   font-weight: 600;
   font-size: 14px;
-}
-
-.snippet pre {
-  margin: 12px 0 0;
-  padding: 12px 16px;
-  border-radius: 8px;
-  background: var(--vp-code-block-bg);
-  overflow-x: auto;
-  font-size: 13px;
 }
 </style>

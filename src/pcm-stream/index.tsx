@@ -38,7 +38,7 @@
  *    [react-native-audio-api](https://github.com/software-mansion/react-native-audio-api).
  *
  * @packageDocumentation
- * @module react-native-waveform-recorder/pcm-stream
+ * @module pcm-stream
  */
 
 /**

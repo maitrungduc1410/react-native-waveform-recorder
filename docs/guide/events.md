@@ -4,7 +4,7 @@ description: "Events fired by WaveformRecorderView: state changes, meter levels,
 
 # Events {#events}
 
-All events are props on `WaveformRecorderView`. Payload types are in the [API reference](/api/react-native-waveform-recorder/).
+All events are props on `WaveformRecorderView`. Payload types are in the [API reference](/api/).
 
 | Event | Payload | When |
 | --- | --- | --- |

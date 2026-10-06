@@ -4,7 +4,7 @@ description: "WaveformRecorderView 的全部属性及其类型和原生默认值
 
 # 属性 {#props}
 
-`WaveformRecorderView` 支持下列属性，以及 `style`、`testID` 等标准 `View` 属性。请为它设置高度，因为视图没有固有尺寸。事件属性见[事件](/zh/guide/events)。类型定义见 [API 参考](/api/react-native-waveform-recorder/type-aliases/WaveformRecorderViewProps)。
+`WaveformRecorderView` 支持下列属性，以及 `style`、`testID` 等标准 `View` 属性。请为它设置高度，因为视图没有固有尺寸。事件属性见[事件](/zh/guide/events)。类型定义见 [API 参考](/api/type-aliases/WaveformRecorderViewProps)。
 
 ## 输出 {#output}
 

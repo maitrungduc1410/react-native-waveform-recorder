@@ -4,7 +4,7 @@ description: "Toàn bộ props của WaveformRecorderView kèm kiểu và giá t
 
 # Props {#props}
 
-`WaveformRecorderView` nhận các props dưới đây cùng các props chuẩn của `View` như `style` và `testID`. Hãy đặt chiều cao cho view, vì view không có kích thước tự nhiên. Các props sự kiện nằm ở trang [Sự kiện](/vi/guide/events). Kiểu dữ liệu có trong [tài liệu API](/api/react-native-waveform-recorder/type-aliases/WaveformRecorderViewProps).
+`WaveformRecorderView` nhận các props dưới đây cùng các props chuẩn của `View` như `style` và `testID`. Hãy đặt chiều cao cho view, vì view không có kích thước tự nhiên. Các props sự kiện nằm ở trang [Sự kiện](/vi/guide/events). Kiểu dữ liệu có trong [tài liệu API](/api/type-aliases/WaveformRecorderViewProps).
 
 ## Đầu ra {#output}
 

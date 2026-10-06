@@ -4,7 +4,7 @@ description: "Every prop of WaveformRecorderView with its type and native defaul
 
 # Props {#props}
 
-`WaveformRecorderView` accepts the props below plus standard `View` props such as `style` and `testID`. Give it a height: the view has no intrinsic size. Event props are listed in [Events](/guide/events). Types are in the [API reference](/api/react-native-waveform-recorder/type-aliases/WaveformRecorderViewProps).
+`WaveformRecorderView` accepts the props below plus standard `View` props such as `style` and `testID`. Give it a height: the view has no intrinsic size. Event props are listed in [Events](/guide/events). Types are in the [API reference](/api/type-aliases/WaveformRecorderViewProps).
 
 ## Output {#output}
 
